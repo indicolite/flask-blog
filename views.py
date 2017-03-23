@@ -4,7 +4,7 @@ from sqlalchemy import func
 from main import app
 from models import db, User, Post, Tag, Comment, posts_tags
 
-def siderbar_data():
+def sidebar_data():
     """Set the sidebar function."""
 
     # Get post of recent
@@ -58,7 +58,7 @@ def tag(tag_name):
 
     tag = db.session.query(Tag).filter_by(title=tag_name).first_or_404()
     posts = tag.posts.order_by(Post.publish_date.desc()).all()
-    recent, top_tags = siderbar_data()
+    recent, top_tags = sidebar_data()
 
     return render_template('tag.html',
             tag=tag,
