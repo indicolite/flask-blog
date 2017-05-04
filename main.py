@@ -1,5 +1,6 @@
 from flask import Flask
 from config import DevConfig
+import wtforms
 
 app = Flask(__name__)
 # Import the views module

@@ -1,5 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from main import app
+from flask_wtf import Form
+from wtforms import StringField, TextField
+from wtforms.validators import DataRequired, Length
 
 # Init the sqlalchemy object
 # Will load the SQLALCHEMY_DATABASE_URL from config.py
@@ -50,8 +53,15 @@ class Post(db.Model):
             secondary=posts_tags,
             backref=db.backref('posts', lazy='dynamic'))
 
-    def __init__(self, title):
-        self.title = title
+    #def __init__(self, id, title, text, publish_date, user_id, comments):
+    #    self.id = id
+    #    self.title = title
+    #    self.text = text
+    #    self.publish_date = publish_date
+    #    self.user_id = user_id
+    #    self.comments = commnets
+    def __init__(self, id):
+        self.id = id
 
     def __repr__(self):
         return "<Model Post `{}`>".format(self.title)
@@ -63,7 +73,8 @@ class Tag(db.Model):
     id = db.Column(db.String(45), primary_key=True)
     name = db.Column(db.String(255))
 
-    def __init__(self, name):
+    def __init__(self, id, name):
+        self.id = id
         self.name = name
 
     def __repr__(self):
@@ -84,3 +95,13 @@ class Comment(db.Model):
 
     def __repr__(self):
         return '<Model Comment `{}`>'.format(self.name)
+
+class CommentForm(Form):
+    """Form validator for comment."""
+
+    # Set some filed(InputBox) for enter the data
+    # patam validators: setup list of validators
+    name = StringField(
+            'Name',
+            validators=[DataRequired(), Length(max=255)])
+    text = TextField(u'Comment', validators=[DataRequired()])
