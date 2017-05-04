@@ -59,13 +59,14 @@ def post(post_id):
 
     post = db.session.query(Post).get_or_404(post_id)
     tags = post.tags
-    comments = post.comment.order_by(Comment.date.desc()).all()
+    comments = post.comments.order_by(Comment.date.desc()).all()
     recent, top_tags = sidebar_data()
 
     return render_template('post.html',
             post=post,
             tags=tags,
             comments=comments,
+            form=form,
             recent=recent,
             top_tags=top_tags)
 
