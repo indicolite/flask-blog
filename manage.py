@@ -1,34 +1,71 @@
-# import Flask Script object
-from flask_script import Manager, Server
-from flask_migrate import Migrate, MigrateCommand
-import main
-import models
-from flask_assets import ManageAssets
+## import Flask Script object
+#from flask import Flask, redirect, url_for
+#from flaskblog.config import DevConfig
+#from flask_script import Manager, Server
+#from flask_migrate import Migrate, MigrateCommand
+#from flaskblog.models import db
+#from flaskblog.controllers import blog
+#from flask_assets import ManageAssets
+#
+#app = Flask(__name__)
+#app.config.from_object(DevConfig)
+#db.init_app(app)
+#
+#@app.route('/')
+#def index():
+#    # Redirect the request_url '/' to '/blog/'
+#    return redirect(url_for('blog.home'))
+#
+#app.register_blueprint(blog.blog_blueprint)
+#
+## Init manager object via app object
+#manager = Manager(main.app)
+#
+## Init migrate object via app and db object
+#migrate = Migrate(main.app, models.db)
+#
+## Create a new commands: server
+## This command will be run the Flask development_env server
+#manager.add_command("server", Server())
+#manager.add_command("db", MigrateCommand)
+#
+#@manager.shell
+#def make_shell_context():
+#    """Create a python CLI.
+#
+#    return: Default import object
+#    type: `Dict`
+#    """
+#    return dict(app=main.app,
+#                db=models.db,
+#                User=models.User,
+#                Post=models.Post,
+#                Comment=models.Comment,
+#                Tag=models.Tag)
+#
+#if __name__ == '__main__':
+#    manager.run()
 
-# Init manager object via app object
-manager = Manager(main.app)
+from flask import Flask, redirect, url_for
 
-# Init migrate object via app and db object
-migrate = Migrate(main.app, models.db)
+from flaskblog.config import DevConfig
+from flaskblog.models import db
+from flaskblog.controllers import blog
 
-# Create a new commands: server
-# This command will be run the Flask development_env server
-manager.add_command("server", Server())
-manager.add_command("db", MigrateCommand)
+app = Flask(__name__)
+# Get the config from object of DecConfig
+app.config.from_object(DevConfig)
 
-@manager.shell
-def make_shell_context():
-    """Create a python CLI.
+# Will be load the SQLALCHEMY_DATABASE_URL from config.py to db object
+db.init_app(app)
 
-    return: Default import object
-    type: `Dict`
-    """
-    return dict(app=main.app,
-                db=models.db,
-                User=models.User,
-                Post=models.Post,
-                Comment=models.Comment,
-                Tag=models.Tag)
+@app.route('/')
+def index():
+    # Redirect the Request_url '/' to '/blog/'
+    return redirect(url_for('blog.home'))
+
+# Register the Blueprint into app object
+app.register_blueprint(blog.blog_blueprint)
 
 if __name__ == '__main__':
-    manager.run()
+    app.run()
