@@ -3,6 +3,7 @@ from flask_script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 import main
 import models
+from flask_assets import ManageAssets
 
 # Init manager object via app object
 manager = Manager(main.app)

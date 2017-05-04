@@ -60,8 +60,9 @@ class Post(db.Model):
     #    self.publish_date = publish_date
     #    self.user_id = user_id
     #    self.comments = commnets
-    def __init__(self, id):
+    def __init__(self, id, title):
         self.id = id
+        self.title = title
 
     def __repr__(self):
         return "<Model Post `{}`>".format(self.title)
