@@ -1,17 +1,16 @@
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, url_for, redirect
 from sqlalchemy import func
 
 #from main import app
 #from models import db, User, Post, Tag, Comment, posts_tags
 from flaskblog.models import db, User, Post, Tag, Comment, posts_tags
 from uuid import uuid4
-#from datetime import datetime
-import datetime
+from datetime import datetime
+#import datetime
 #from forms import CommentForm
-from flaskblog.forms import CommentForm
+from flaskblog.forms import CommentForm, PostForm
 
 from os import path
-from flask import render_template, Blueprint
 
 blog_blueprint = Blueprint(
         'blog',
@@ -113,3 +112,39 @@ def user(username):
 @blog_blueprint.route('/')
 def index():
     return redirect(url_for('blog.home'))
+
+@blog_blueprint.route('/new', methods=['GET', 'POST'])
+def new_post():
+    """View function for new_post."""
+    form = PostForm()
+
+    if form.validate_on_submit():
+        new_post = Post(id=str(uuid4()), title=form.title.data)
+        new_post.text = form.text.data
+        new_post.publish_date = datetime.now()
+
+        db.session.add(new_post)
+        db.session.commit()
+        return redirect(url_for('blog.home'))
+
+    return render_template('new_post.html', form=form)
+
+@blog_blueprint.route('/edit/<string:id>', methods=['GET', 'POST'])
+def edit_post(id):
+    """View function for edit_post."""
+    post = Post.query.get_or_404(id)
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.text = form.text.data
+        post.publish_date = datetime.now()
+
+        # Update the post
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('blog.post', post_id=post.id))
+
+    form.title.data = post.title
+    form.text.data = post.text
+    return render_template('edit_post.html', form=form, post=post)

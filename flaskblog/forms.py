@@ -67,3 +67,9 @@ class CommentForm(Form):
 
     text = TextField(u'Comment', validators=[DataRequired()])
 
+
+class PostForm(Form):
+    """Post Form."""
+
+    title = StringField('Title', [DataRequired(), Length(max=255)])
+    text = TextAreaField('Blog Content', [DataRequired()])
