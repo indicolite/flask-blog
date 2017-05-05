@@ -46,26 +46,60 @@
 #if __name__ == '__main__':
 #    manager.run()
 
-from flask import Flask, redirect, url_for
+#from flask import Flask, redirect, url_for
+#
+#from flaskblog.config import DevConfig
+#from flaskblog.models import db
+#from flaskblog.controllers import blog
+#
+#app = Flask(__name__)
+## Get the config from object of DecConfig
+#app.config.from_object(DevConfig)
+#
+## Will be load the SQLALCHEMY_DATABASE_URL from config.py to db object
+#db.init_app(app)
+#
+#@app.route('/')
+#def index():
+#    # Redirect the Request_url '/' to '/blog/'
+#    return redirect(url_for('blog.home'))
+#
+## Register the Blueprint into app object
+#app.register_blueprint(blog.blog_blueprint)
+#
+#if __name__ == '__main__':
+#    app.run()
 
-from flaskblog.config import DevConfig
-from flaskblog.models import db
-from flaskblog.controllers import blog
+import os
 
-app = Flask(__name__)
-# Get the config from object of DecConfig
-app.config.from_object(DevConfig)
+from flask_script import Manager, Server
+from flask_migrate import Migrate, MigrateCommand
+from flaskblog import create_app
+from flaskblog import models
 
-# Will be load the SQLALCHEMY_DATABASE_URL from config.py to db object
-db.init_app(app)
+env = os.environ.get('BLOG_ENV', 'dev')
+app = create_app('flaskblog.config.%sConfig' % env.capitalize())
+manager = Manager(app)
 
-@app.route('/')
-def index():
-    # Redirect the Request_url '/' to '/blog/'
-    return redirect(url_for('blog.home'))
+migrate = Migrate(app, models.db)
 
-# Register the Blueprint into app object
-app.register_blueprint(blog.blog_blueprint)
+manager.add_command("server", Server(host='127.0.0.1', port=5000))
+manager.add_command("db", MigrateCommand)
+
+@manager.shell
+def make_shell_context():
+    """Create python cli.
+
+    return: default import object
+    type: `Dict`
+    """
+    return dict(app=app,
+            db=models.db,
+            User=models.User,
+            Post=models.Post,
+            Comment=models.Comment,
+            Tag=models.Tag,
+            Server=Server)
 
 if __name__ == '__main__':
-    app.run()
+    manager.run()
