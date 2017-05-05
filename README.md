@@ -1,3 +1,6 @@
+# 2017-05-05
+1. adding flask_brycpt module now
+2. adding reCAPTCHA to HomePage now
 # 2017-05-04
 1. Refactor with flask.Blueprint now
 # 2017-03-23
