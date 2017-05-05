@@ -5,7 +5,7 @@ import random
 import datetime
 from uuid import uuid4
 
-from models import db, User, Tag, Post
+from flaskblog.models import db, User, Tag, Post
 
 user = User(id=str(uuid4()), username='vagrant', password='password')
 db.session.add(user)

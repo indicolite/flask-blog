@@ -64,7 +64,7 @@ def post(post_id):
         new_comment = Comment(id=str(uuid4()),
                 name=form.name.data)
         new_comment.text = form.text.data
-        new_comment.date = datetime.datetime.now()
+        new_comment.date = datetime.now()
         new_comment.post_id = post_id
         db.session.add(new_comment)
         db.session.commit()
