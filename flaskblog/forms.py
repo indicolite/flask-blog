@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-from flask_wtf import Form, RecaptchaField
+from flask_wtf import Form, RecaptchaField, recaptcha
 from wtforms import (
         StringField,
         TextField,
@@ -20,7 +20,7 @@ class RegisterForm(Form):
     username = StringField('Username', [DataRequired(), Length(max=255)])
     password = PasswordField('Password', [DataRequired(), Length(min=8)])
     confirm = PasswordField('Confirm Password', [DataRequired(), EqualTo('password')])
-    recaptcha = RecaptchaField()
+    #recaptcha = RecaptchaField()
 
     def validate(self):
         check_validate = super(RegisterForm, self).validate()

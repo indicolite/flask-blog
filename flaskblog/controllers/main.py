@@ -47,8 +47,8 @@ def register():
     if form.validate_on_submit():
         new_user = User(id=str(uuid4()),
                 username=form.username.data,
-                password=form.password.data,
-                confirm=form.password.data)
+                password=form.password.data)
+                #confirm=form.password.data)
         db.session.add(new_user)
         db.session.commit()
 

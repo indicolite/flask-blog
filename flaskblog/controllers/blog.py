@@ -8,7 +8,7 @@ from uuid import uuid4
 from datetime import datetime
 #import datetime
 #from forms import CommentForm
-from flaskblog.forms import CommentForm, PostForm
+from flaskblog.forms import CommentForm, PostForm, RegisterForm
 
 from os import path
 
