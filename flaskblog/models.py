@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import Form
 from wtforms import StringField, TextField
 from wtforms.validators import DataRequired, Length
+from extensions import bcrypt
 
 # Init the sqlalchemy object
 # Will load the SQLALCHEMY_DATABASE_URL from config.py
@@ -25,10 +26,17 @@ class User(db.Model):
     def __init__(self, id, username, password):
         self.id = id
         self.username = username
-        self.password = password
+        self.password = self.set_password(password)
 
     def __repr__(self):
         return "<Model User `{}`>".format(self.username)
+
+    def set_password(self, password):
+        """Convert the password to cryptograph via flask-bcrypt"""
+        return bcrypt.generate_password_hash(password)
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
 
 posts_tags = db.Table('posts_tags',
         db.Column('post_id', db.String(45), db.ForeignKey('posts.id')),

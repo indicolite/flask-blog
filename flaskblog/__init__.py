@@ -5,12 +5,16 @@ from admin_pages import admin
 
 from models import db
 from controllers import blog
+from extensions import bcrypt
+
 
 def create_app(object_name):
     """Create the app instance via `Factory Method`"""
+
     app = Flask(__name__)
     app.config.from_object(object_name)
     db.init_app(app)
+    bcrypt.init_app(app)
 
     @app.route('/')
     def index():
