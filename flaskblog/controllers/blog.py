@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 
 #from main import app
 #from models import db, User, Post, Tag, Comment, posts_tags
-from flaskblog.models import db, User, Post, Tag, Comment, posts_tags
+from flaskblog.models import db, User, Post, Tag, Comment, posts_tags, Role
 from uuid import uuid4
 from datetime import datetime
 #import datetime

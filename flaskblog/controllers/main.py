@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from flask import flash, url_for, redirect, render_template, Blueprint, request
 from flaskblog.forms import LoginForm, RegisterForm, OpenIDForm
-from flaskblog.models import db, User
+from flaskblog.models import db, User, Role, Tag
 from flaskblog.extensions import openid, facebook
 from flask_login import login_user, logout_user
 from flask.ext.principal import Identity, AnonymousIdentity
