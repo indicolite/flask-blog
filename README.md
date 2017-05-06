@@ -1,3 +1,5 @@
+# 2017-05-06
+1. adding facebook oauth now
 # 2017-05-05
 1. adding flask_brycpt module now
 2. adding reCAPTCHA to HomePage now
