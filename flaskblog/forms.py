@@ -38,6 +38,7 @@ class LoginForm(Form):
 
     username = StringField('Username', [DataRequired(), Length(max=255)])
     password = PasswordField('Password', [DataRequired()])
+    remember = BooleanField("Remember Me")
 
     def validate(self):
         """Validator for check the account information."""
@@ -54,6 +55,8 @@ class LoginForm(Form):
         if not user.check_password(self.password.data):
             self.username.error.append('Invalid username or password.')
             return False
+
+        return True
 
 
 class CommentForm(Form):
@@ -73,3 +76,9 @@ class PostForm(Form):
 
     title = StringField('Title', [DataRequired(), Length(max=255)])
     text = TextAreaField('Blog Content', [DataRequired()])
+
+
+class OpenIDForm(Form):
+    """OpenID Form."""
+
+    openid_url = StringField('OpenID URL', [DataRequired(), URL()])

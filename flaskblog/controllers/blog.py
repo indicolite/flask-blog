@@ -1,5 +1,6 @@
 from flask import render_template, Blueprint, url_for, redirect
 from sqlalchemy import func
+from flask_login import login_required, current_user
 
 #from main import app
 #from models import db, User, Post, Tag, Comment, posts_tags
@@ -114,14 +115,21 @@ def index():
     return redirect(url_for('blog.home'))
 
 @blog_blueprint.route('/new', methods=['GET', 'POST'])
+@login_required
 def new_post():
     """View function for new_post."""
     form = PostForm()
+
+    # Ensure the user logged in.
+    # Flask-Login.current_user can access by current user.
+    if not current_user:
+        return redirect(url_for('main.login'))
 
     if form.validate_on_submit():
         new_post = Post(id=str(uuid4()), title=form.title.data)
         new_post.text = form.text.data
         new_post.publish_date = datetime.now()
+        new_post.users = current_user
 
         db.session.add(new_post)
         db.session.commit()
